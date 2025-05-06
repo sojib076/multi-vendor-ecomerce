@@ -6,33 +6,30 @@ import { ArrowRight, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ProductCard } from "./product-card"
 import { limitedOfferProducts } from "@/lib/products"
+import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks"
+import { toggleCompare } from "@/store/slices/compareSlice"
  
 
 const productCategories = ["Electronics", "Beauty & Health", "Fashions"]
 
 export function LimitedOfferProducts() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null)
-  const [comparedProducts, setComparedProducts] = useState<number[]>([])
+  const [activeCategory, setActiveCategory] = useState<string | null>('Electronics')
 
   const filteredProducts = activeCategory
     ? limitedOfferProducts.filter((product) => product.category === activeCategory)
     : limitedOfferProducts
 
-  const handleAddToCompare = (productId: number) => {
-    if (comparedProducts.includes(productId)) {
-      setComparedProducts(comparedProducts.filter((id) => id !== productId))
-    } else {
-      if (comparedProducts.length < 3) {
-        setComparedProducts([...comparedProducts, productId])
-      } else {
-        alert("You can compare up to 3 products at a time")
-      }
+    const handleAddToCompare = (productId: number) => {
+      dispatch(toggleCompare(productId))
     }
-  }
 
+  const dispatch = useAppDispatch()
+  const comparedProducts = useAppSelector(state => state.compare.comparedIds)
+  
   const getComparedProductsData = () => {
     return limitedOfferProducts.filter((product) => comparedProducts.includes(product.id))
   }
@@ -47,7 +44,7 @@ export function LimitedOfferProducts() {
               key={category}
               variant={activeCategory === category ? "default" : "outline"}
               onClick={() => setActiveCategory(activeCategory === category ? null : category)}
-              className={activeCategory === category ? "bg-rose-500 hover:bg-rose-600" : ""}
+              className={activeCategory === category ? "bg-rose-500 hover:bg-rose-600" : " cursor-pointer"}
             >
               {category}
             </Button>

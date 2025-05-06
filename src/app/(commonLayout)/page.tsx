@@ -10,6 +10,7 @@ import Popularproducts from '@/components/Common/Home/popular-products';
 import FeaturedProduct from '@/components/Common/Home/FeaturedProduct';
 import { CustomerReviews } from '@/components/Common/Home/customer-reviews';
 import SignupPopup from '@/components/Common/Home/SignupPopup';
+import { FloatingCartButton } from '@/components/Common/Home/floating-cart-button';
 
 const Home = () => {
     
@@ -26,6 +27,8 @@ const Home = () => {
          <CustomerReviews/>
          <SignupPopup/>
          </div>
+            {/* <FloatingCartButton/> */}
+            <FloatingCartButton/>
 
         </div>
     );

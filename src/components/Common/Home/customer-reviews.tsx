@@ -110,19 +110,19 @@ export function CustomerReviews() {
   const autoplayPlugin = Autoplay({ delay: 3000, stopOnInteraction: true })
 
   return (
-    <div className="py-12">
+    <div className="py-12 ">
       <h2 className="text-2xl font-bold text-center mb-8">Best Products Customer Feedbacks</h2>
 
       <Carousel
         setApi={setApi}
-        className="w-full"
+        className="w-full "
         plugins={[autoplayPlugin]}
         opts={{
           align: "start",
           loop: true,
         }}
       >
-        <CarouselContent className="">
+        <CarouselContent className="p-4">
           {reviews.map((review) => (
             <CarouselItem
               key={review.id}

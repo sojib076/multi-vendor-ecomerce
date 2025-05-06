@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Eye, Heart, BarChart2, ShoppingCart } from "lucide-react"
+import { Eye, Heart, BarChart2, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -14,6 +14,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { addToCart, CartItem } from "@/store/slices/cartSlice"
+import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks"
 
 interface ProductCardProps {
   product: {
@@ -35,7 +37,20 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onAddToCompare, isCompared }: ProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false)
+  const dispatch = useAppDispatch()
+  const handleAddToCart = () => {
+    const cartItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: 1,
+    }
 
+    dispatch(addToCart(cartItem))
+  }
+  const cartState = useAppSelector((state) => state.cart) || { items: [] }
+   const isInCart = cartState.items.some((item) => item.id === product.id)
   return (
     <div className="group relative border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-md hover:scale-110 cursor-pointer ">
       
@@ -79,6 +94,7 @@ export function ProductCard({ product, onAddToCompare, isCompared }: ProductCard
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          
           <DialogContent className="sm:max-w-[800px]">
             <DialogHeader>
               <DialogTitle>Quick View</DialogTitle>
@@ -197,12 +213,21 @@ export function ProductCard({ product, onAddToCompare, isCompared }: ProductCard
         </div>
         <div className="text-xs text-green-500 mb-4">Available only: {product.availableQuantity}</div>
 
-        <Button className="w-full bg-gray-800 hover:bg-black transition-colors cursor-pointer
-          hidden group-hover:flex
-        ">
-          Add To Cart <ArrowRight className="h-4 w-4 ml-2" />
-        </Button>
+      {
+        isInCart ? (
+          <Button  className=" cursor-pointer flex items-center justify-center bg-rose-500 text-white text-sm font-bold py-2 rounded hover:bg-rose-600 transition duration-300">
+            Already in Cart
+           
+          </Button>
+        ) : (
+          <Button onClick={handleAddToCart} className="bg-rose-500 cursor-pointer text-white text-sm font-bold py-2 rounded hover:bg-rose-600 transition duration-300 flex items-center justify-center">
+            Add to Cart
+            <ShoppingCart className="h-4 w-4 ml-2" />
+          </Button>
+        ) 
+      }
       </div>
+      
     </div>
   )
 }

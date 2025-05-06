@@ -5,8 +5,7 @@ const productdetails = () => {
         <div>
             <h1>Product Details</h1>
             <p>Details about the product will be displayed here.</p>
-            <p>Product ID: {/* You can use the product ID from the URL here */}</p>
-            {/* Add more details about the product as needed */}
+         
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             
         </div>

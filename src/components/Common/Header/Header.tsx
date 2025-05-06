@@ -2,13 +2,12 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ChevronDown, Heart, ListEnd, Phone, Search, ShoppingCart, User } from "lucide-react"
-
+import { ChevronDown, Heart, ListEnd, Phone, Search, ShoppingCart, User } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-
-// Add this style to the component
+import { useAppSelector } from "@/store/hooks/hooks"
+import { CartDropdown } from "./cart-dropdown"
 
 
 const topNavLinks = [
@@ -56,10 +55,17 @@ const mainNavLinks = [
 
 export function Header() {
   const [selectedCategory, setSelectedCategory] = useState(searchCategories[0])
+  const [isCartOpen, setIsCartOpen] = useState(false)
+  
+
+  // Add a safe access to the cart state with a default value
+  const cartState = useAppSelector((state) => state.cart) || { totalItems: 0 }
+  const totalItems = cartState.totalItems
+
+ 
 
   return (
-    <header className="">
-      {/* Top navigation bar */}
+    <header className="relative bg-white shadow-md">
       <div className="bg-black text-white px-4 py-2 flex flex-col md:flex-row justify-between items-center text-sm">
         <div className="flex flex-wrap justify-center md:justify-start space-x-3 md:space-x-6 mb-2 md:mb-0">
           {topNavLinks.map((link) => (
@@ -96,121 +102,135 @@ export function Header() {
         </div>
       </div>
 
-      <div className="w-full md:w-[90%] mx-auto">
-        <div className="px-4 flex flex-col md:flex-row justify-between items-center border-b py-4 md:py-10 gap-4">
-          <Link href="/" className="text-2xl font-bold">
-            <span>Angadi</span>
-            <span className="text-red-500">.</span>
-            <span className="text-yellow-500">.</span>
-            <span className="text-green-500">.</span>
-          </Link>
+    
+      <div className={`sticky top-0 z-50 bg-white transition-shadow duration-300`}>
+        <div className="w-full md:w-[90%] mx-auto">
+          <div className="px-4 flex flex-col md:flex-row justify-between items-center border-b py-4 md:py-6 gap-4">
+            <Link href="/" className="text-2xl font-bold">
+              <span>Angadi</span>
+              <span className="text-red-500">.</span>
+              <span className="text-yellow-500">.</span>
+              <span className="text-green-500">.</span>
+            </Link>
 
-          <div className="flex items-center  w-full max-w-xl">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="rounded-r-none  w-20 md:w-28 text-xs md:text-sm">
-                  {selectedCategory.name.split(" ")[0]} <ChevronDown className="h-4 w-4 ml-1" />
+            <div className="flex items-center w-full max-w-xl">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="rounded-r-none w-20 md:w-28 text-xs md:text-sm">
+                    {selectedCategory.name.split(" ")[0]} <ChevronDown className="h-4 w-4 ml-1" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {searchCategories.map((category) => (
+                    <DropdownMenuItem key={category.id} onSelect={() => setSelectedCategory(category)}>
+                      {category.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <div className="flex w-full max-w-sm items-center space-x-2">
+                <Input type="text" placeholder="Search for anything" className="rounded-l-none text-xs md:text-sm" />
+                <Button type="submit" size="icon" className="bg-teal-100 hover:bg-teal-200 text-teal-700">
+                  <Search className="h-4 w-4" />
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {searchCategories.map((category) => (
-                  <DropdownMenuItem key={category.id} onSelect={() => setSelectedCategory(category)}>
-                    {category.name}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <div className="flex w-full max-w-sm items-center space-x-2">
-              <Input type="text" placeholder="Search for anything" className="rounded-l-none text-xs md:text-sm" />
-              <Button type="submit" size="icon" className="bg-teal-100 hover:bg-teal-200 text-teal-700">
-                <Search className="h-4 w-4" />
-              </Button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between w-full md:w-auto md:space-x-4">
+              <Link href="/account" className="flex items-center text-xs md:text-sm">
+                <div className="bg-rose-100 rounded-full p-2 mr-2">
+                  <User className="h-4 w-4 text-rose-500" />
+                </div>
+                <div className="flex flex-col">
+                  <span>Sign In</span>
+                  <span>Account</span>
+                </div>
+              </Link>
+              <Link href="/wishlist" className="text-gray-700">
+                <div className="relative">
+                  <div className="bg-gray-100 rounded-full p-2">
+                    <Heart className="text-rose-500" />
+                  </div>
+                  <div className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    0
+                  </div>
+                </div>
+              </Link>
+
+              <DropdownMenu open={isCartOpen} onOpenChange={setIsCartOpen}>
+                <DropdownMenuTrigger asChild>
+                  <Button className="bg-rose-500 hover:bg-rose-600 flex items-center space-x-2 text-xs md:text-sm cursor-pointer">
+                    <ShoppingCart className="h-4 w-4" />
+                    <span>Cart</span>
+                    {totalItems > 0 && (
+                      <div className="ml-1 bg-white text-rose-500 text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {totalItems}
+                      </div>
+                    )}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="p-0">
+                  <CartDropdown />
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
-          <div className="flex items-center justify-between w-full md:w-auto md:space-x-4">
-            <Link href="/account" className="flex items-center text-xs md:text-sm">
-              <div className="bg-rose-100 rounded-full p-2 mr-2">
-                <User className="h-4 w-4 text-rose-500" />
-              </div>
-              <div className="flex flex-col">
-                <span>Sign In</span>
-                <span>Account</span>
-              </div>
-            </Link>
-            <Link href="/wishlist" className="text-gray-700">
-              <div className="relative">
-                <div className="bg-gray-100 rounded-full p-2">
-                  <Heart className="text-rose-500" />
-                </div>
-                <div className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  0
-                </div>
-              </div>
-            </Link>
-            <Link href="/cart" className="flex items-center">
-              <Button className="bg-rose-500 hover:bg-rose-600 flex items-center space-x-2 text-xs md:text-sm">
-                <ShoppingCart className="h-4 w-4" />
-                <span>Cart</span>
-              </Button>
-            </Link>
-          </div>
-        </div>
+          <div className="pb-4 md:pb-6 pt-3 md:pt-4 overflow-x-auto">
+            <div className="mx-auto px-4 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-0">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="flex items-center bg-sky-100 text-sky-700 hover:bg-sky-200 rounded-none py-2 md:py-3 px-3 md:px-4 text-xs md:text-sm w-full md:w-auto justify-between md:justify-start"
+                  >
+                    <ListEnd className="mr-2" />
+                    <span>Browse Categories</span>
+                    <ChevronDown className="h-4 w-4 ml-1" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-[200px] shadow-none bg-gray-800 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100">
+                  {browseCategories.map((category) => (
+                    <DropdownMenuItem key={category.id}>
+                      <Link href={`/category/${category.id}`} className="w-full">
+                        {category.id}. {category.name}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
 
-        <div className="pb-4 md:pb-10 pt-3 md:pt-5 overflow-x-auto">
-          <div className="mx-auto px-4 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-0">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="flex items-center bg-sky-100 text-sky-700 hover:bg-sky-200 rounded-none py-2 md:py-3 px-3 md:px-4 text-xs md:text-sm w-full md:w-auto justify-between md:justify-start"
-                >
-                  <ListEnd className="mr-2" />
-                  <span>Browse Categories</span>
-                  <ChevronDown className="h-4 w-4 ml-1" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[200px] shadow-none bg-gray-800 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100">
-                {browseCategories.map((category) => (
-                  <DropdownMenuItem key={category.id}>
-                    <Link href={`/category/${category.id}`} className="w-full">
-                      {category.id}. {category.name}
-                    </Link>
-                  </DropdownMenuItem>
+              <nav className="flex overflow-x-auto w-full pb-2 md:pb-0 hide-scrollbar">
+                {mainNavLinks.map((link) => (
+                  <Link
+                    key={link.title}
+                    href={link.href}
+                    className="px-3 md:px-4 py-2 md:py-3 hover:text-rose-500 whitespace-nowrap text-xs md:text-sm"
+                  >
+                    {link.title}
+                  </Link>
                 ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </nav>
 
-            <nav className="flex overflow-x-auto w-full pb-2 md:pb-0 hide-scrollbar">
-              {mainNavLinks.map((link) => (
-                <Link
-                  key={link.title}
-                  href={link.href}
-                  className="px-3 md:px-4 py-2 md:py-3 hover:text-rose-500 whitespace-nowrap text-xs md:text-sm"
+              <Button variant="ghost" className="ml-auto hidden md:flex">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-6 w-6"
                 >
-                  {link.title}
-                </Link>
-              ))}
-            </nav>
-
-            <Button variant="ghost" className="ml-auto hidden md:flex">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-6 w-6"
-              >
-                <circle cx="12" cy="12" r="1" />
-                <circle cx="19" cy="12" r="1" />
-                <circle cx="5" cy="12" r="1" />
-              </svg>
-            </Button>
+                  <circle cx="12" cy="12" r="1" />
+                  <circle cx="19" cy="12" r="1" />
+                  <circle cx="5" cy="12" r="1" />
+                </svg>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

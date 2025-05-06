@@ -47,7 +47,7 @@ export function ShopByCategory() {
     <div className="py-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold">Shop Deals By Category</h2>
-        <Link href="/categories" className="flex items-center text-sm text-gray-500 hover:text-rose-500">
+        <Link href="/category" className="flex items-center text-sm text-gray-500 hover:text-rose-500">
           All Categories <ArrowRight className="w-4 h-4 ml-1" />
         </Link>
       </div>

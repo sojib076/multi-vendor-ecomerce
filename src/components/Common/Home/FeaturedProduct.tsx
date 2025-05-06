@@ -1,90 +1,14 @@
 "use client"
-import React, { useState } from 'react';
+import React from 'react';
 import { ProductCard } from './product-card';
 import { Star, X } from 'lucide-react';
 import { CountdownTimer } from './CountdownTimer';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button';
-const limitedOfferProducts = [
-    {
-      id: 1,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: true,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 2,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: false,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 3,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: false,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 4,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: true,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 5,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: false,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 6,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: false,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-  ]
+import { limitedOfferProducts } from '@/lib/products';
+import { useAppDispatch, useAppSelector } from '@/store/hooks/hooks';
+import { toggleCompare } from '@/store/slices/compareSlice';
+
 
 
 const FeaturedProduct = () => {
@@ -95,24 +19,17 @@ const FeaturedProduct = () => {
     targetDate.setMinutes(targetDate.getMinutes() + 34)
     targetDate.setSeconds(targetDate.getSeconds() + 17)
 
-    const [comparedProducts, setComparedProducts] = useState<number[]>([])
+    
+      const dispatch = useAppDispatch()
+      const comparedProducts = useAppSelector(state => state.compare.comparedIds)
 
-
+      const handleAddToCompare = (productId: number) => {
+        dispatch(toggleCompare(productId))
+      }
 
 
    
 
-  const handleAddToCompare = (productId: number) => {
-    if (comparedProducts.includes(productId)) {
-      setComparedProducts(comparedProducts.filter((id) => id !== productId))
-    } else {
-      if (comparedProducts.length < 3) {
-        setComparedProducts([...comparedProducts, productId])
-      } else {
-        alert("You can compare up to 3 products at a time")
-      }
-    }
-  }
 
   const getComparedProductsData = () => {
     return limitedOfferProducts.filter((product) => comparedProducts.includes(product.id))
