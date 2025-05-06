@@ -44,14 +44,14 @@ const browseCategories = [
 ]
 
 const mainNavLinks = [
-  { title: "Home", href: "/home" },
-  { title: "Kitchen", href: "/kitchen" },
-  { title: "Electronics", href: "/electronics" },
-  { title: "Fashion", href: "/fashion" },
-  { title: "Jewellery", href: "/jewellery" },
-  { title: "Beauty & Health", href: "/beauty-health" },
-  { title: "Toys & Games", href: "/toys-games" },
-  { title: "Auto-Mobiles", href: "/auto-mobiles" },
+  { title: "Home", href: "/" },
+  { title: "Kitchen", href: "/category/kitchen" },
+  { title: "Electronics", href: "/category/electronics" },
+  { title: "Fashion", href: "/category/fashion" },
+  { title: "Jewellery", href: "/category/jewellery" },
+  { title: "Beauty & Health", href: "/category/beauty-health" },
+  { title: "Toys & Games", href: "/category/toys-games" },
+  { title: "Auto-Mobiles", href: "/category/auto-mobiles" },
 ]
 
 export function Header() {
@@ -105,10 +105,10 @@ export function Header() {
             <span className="text-green-500">.</span>
           </Link>
 
-          <div className="flex items-center space-x-2 w-full max-w-xl">
+          <div className="flex items-center  w-full max-w-xl">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="rounded-r-none border-r-0 w-20 md:w-28 text-xs md:text-sm">
+                <Button variant="outline" className="rounded-r-none  w-20 md:w-28 text-xs md:text-sm">
                   {selectedCategory.name.split(" ")[0]} <ChevronDown className="h-4 w-4 ml-1" />
                 </Button>
               </DropdownMenuTrigger>

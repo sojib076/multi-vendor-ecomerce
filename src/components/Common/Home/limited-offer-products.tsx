@@ -8,89 +8,11 @@ import { Button } from "@/components/ui/button"
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ProductCard } from "./product-card"
- const limitedOfferProducts = [
-    {
-      id: 1,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: true,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 2,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: false,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 3,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: false,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 4,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: true,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 5,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: false,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-    {
-      id: 6,
-      name: "Sony A7 III Mirrorless Camera Body Only",
-      price: 120.0,
-      originalPrice: 150.0,
-      rating: 3.2,
-      inStock: false,
-      image: "/placeholder.svg?height=200&width=200",
-      category: "Electronics",
-      availableQuantity: 45,
-      discount: "15% OFF",
-      saleTag: "Great Freedom Limited Sale",
-    },
-  ]
-  
+import { limitedOfferProducts } from "@/lib/products"
  
-   const productCategories = ["Electronics", "Beauty & Health", "Fashions"]
+
+const productCategories = ["Electronics", "Beauty & Health", "Fashions"]
+
 export function LimitedOfferProducts() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [comparedProducts, setComparedProducts] = useState<number[]>([])

@@ -52,7 +52,8 @@ export default function Banner() {
     <div className="relative w-full bg-slate-50">
       <Carousel
         className="w-full"
-        onSelect={(index) => setActiveSlide(index)}
+        onSelect={(index) => setActiveSlide(index as unknown as number)}
+        
         plugins={[
           Autoplay({
             delay: 3000,
