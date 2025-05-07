@@ -105,9 +105,11 @@ export function CartDropdown() {
           </div>
           
           <div className="mt-4 space-y-2">
+            <Link href= {`/checkout/465`} className="w-full">
             <Button className="w-full bg-rose-500 hover:bg-rose-600 cursor-pointer">
               Checkout
             </Button>
+            </Link>
             <Button variant="outline" className="w-full cursor-pointer">
               <Link href="/cart">View Cart</Link>
             </Button>

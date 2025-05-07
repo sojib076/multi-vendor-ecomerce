@@ -3,8 +3,12 @@
 import { useState, useEffect } from "react"
 import { ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { useAppSelector } from "@/store/hooks/hooks"
 import { CartDropdown } from "../Header/cart-dropdown"
 
@@ -16,36 +20,36 @@ export function FloatingCartButton() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Calculate 20% of the document height
       const scrollThreshold = document.documentElement.scrollHeight * 0.2
-
-      // Show button when scrolled past 20% of the page
-      if (window.scrollY > scrollThreshold) {
-        setIsVisible(true)
-      } else {
-        setIsVisible(false)
-      }
+      setIsVisible(window.scrollY > scrollThreshold)
     }
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  if (!isVisible) return null
-
   return (
     <>
-      <Button
-        onClick={() => setIsCartOpen(true)}
-        className="fixed bottom-6 right-6 z-50 rounded-full w-14 h-14 bg-rose-500 hover:bg-rose-600 shadow-lg flex items-center justify-center"
+      {/* Button container with animation */}
+      <div
+        className={`fixed bottom-4 
+          left-4 z-50 transform transition-all duration-500 ease-in-out ${
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        }`}
       >
-        <ShoppingCart className="h-6 w-6" />
-        {totalItems > 0 && (
-          <div className="absolute -top-2 -right-2 bg-white text-rose-500 text-xs rounded-full h-6 w-6 flex items-center justify-center border-2 border-rose-500 font-bold">
-            {totalItems}
-          </div>
-        )}
-      </Button>
+        <Button
+        size={"lg"}
+          onClick={() => setIsCartOpen(true)}
+          className="bg-red-500 shadow-lg cursor-pointer p-2 relative"
+        >
+          <ShoppingCart className="h-6 w-6" />
+          {totalItems > 0 && (
+            <div className="absolute -top-2 -right-2 bg-white text-rose-500 text-xs rounded-full h-6 w-6 flex items-center justify-center border-2 border-rose-500 font-bold">
+              {totalItems}
+            </div>
+          )}
+        </Button>
+      </div>
 
       <Dialog open={isCartOpen} onOpenChange={setIsCartOpen}>
         <DialogContent className="sm:max-w-md p-0">

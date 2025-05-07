@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Eye, Heart, BarChart2, ShoppingCart } from "lucide-react"
+import {  Eye, Heart, BarChart2, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,

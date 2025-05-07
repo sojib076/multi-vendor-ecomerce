@@ -1,19 +1,17 @@
 'use client';
 
-import { ThemeProvider } from '@/components/ThemeProvider';
+
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
+import { Toaster } from 'sonner';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="light"
-        disableTransitionOnChange
-      >
+      
         {children}
-      </ThemeProvider>
+        <Toaster />
+
     </Provider>
   );
 }
